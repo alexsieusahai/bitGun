@@ -1,9 +1,9 @@
 # byteGun 
 A codeforces test suite. 
 ##todo
-- implement a function to refresh solved problems, then run it every single time you finish "solving" a problem
 - build an editor for _config.yml_
-- find a solution for compiling and running for an arbitrary specified language that's better than the garbage one I have now
+- incorporate tutorials for problems and some interface for the user to access it (maybe a keyword?)
+- find a solution for compiling and running for an arbitrary specified language that's better than what I have now
 - let the user sort the problems by tags
 - find a better solution for finding if the editor thread is closed
 - **important;** figure out a way to submit without having the user go to codeforces and login manually if possible
@@ -24,3 +24,4 @@ A codeforces test suite.
 - stored the json data and i'm loading that stored data instead of scraping it everytime
 - search by name implemented
 - search by contest id and index implemented
+- using _codeforces api_ to find the problems the user with the specified handle in _config.yml_ has solved, then displaying that with the terminal scrolling

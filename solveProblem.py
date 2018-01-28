@@ -60,7 +60,7 @@ def solveProblem(contestNo, problemAlpha):
                     try:
                         subprocess.run(['g++', contestNo+problemAlpha+'.cpp', '-o', contestNo+problemAlpha],stdout=FNULL,stderr=subprocess.STDOUT)
                     except:
-                        continue # ignore and try again
+                        continue
                 else:
                     print('language compile syntax not supported; please log as an issue on the repo for byteGun')
 
@@ -96,7 +96,7 @@ def solveProblem(contestNo, problemAlpha):
                     openContestUrl.openContestUrl(contestNo, problemAlpha)
                     i = 0
                     verdict = ''
-                    while verdict != '':
+                    while verdict == '':
                         verdict = getVerdict.getVerdict()
                         print('The last result was: ',verdict)
                         time.sleep(1)

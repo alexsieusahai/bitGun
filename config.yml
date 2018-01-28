@@ -12,6 +12,8 @@ compiles:
     java: True
 keys:
     up: 'k'
+    rskip: 'r'
+    lskip: 'e'
     down: 'j'
     attempt: 'i'
     update: 'u'

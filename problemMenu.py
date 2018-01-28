@@ -80,9 +80,21 @@ while True:
                 yRender += 1
                 problemNoRender += 1
             stdscr.move(y,0)
-
         stdscr.addstr(fancyString(problemNo, problemList))
         problemNo += 1
+        stdscr.move(y,0)
+
+    if c == config['keys']['rskip']:
+        problemNo += maxX+1
+        problemNoRender = problemNo-1
+        problemNo += y
+        yRender = 0
+        for i in range(maxX+2):
+            stdscr.clrtoeol()
+            stdscr.addstr(fancyString(problemNoRender, problemList))
+            stdscr.move(yRender,0)
+            yRender += 1
+            problemNoRender += 1
         stdscr.move(y,0)
 
     if c == config['keys']['up']:
@@ -99,7 +111,7 @@ while True:
             yRender = maxX
             for i in range(maxX+1,0,-1):
                 stdscr.clrtoeol()
-                stdscr.addstr(problemNo, problemList)
+                stdscr.addstr(fancyString(problemNo, problemList))
                 stdscr.move(yRender,0)
                 yRender -= 1
                 problemNo-= 1
@@ -108,11 +120,23 @@ while True:
         if problemNo < 0:
             problemNo = 0
         stdscr.move(y,0)
+
+    if c == config['keys']['lskip']:
+        yRender = maxX
+        for i in range(maxX+1,0,-1):
+            stdscr.clrtoeol()
+            stdscr.addstr(fancyString(problemNo, problemList))
+            stdscr.move(yRender,0)
+            yRender -= 1
+            problemNo-= 1
+        stdscr.move(y,0)
+
     if c == config['keys']['attempt']:
         closeCurses()
         if showProblemDesc.showProblemDesc(problemList[y][1], problemList[y][2]):
             #solveProblem.solveProblem(problemList[y][1],problemList[y][2])
             solveProblem.solveProblem('4','A')
+            getSolvedProblems.getSolvedProblems() # refresh the correct dict
         beginCurses()
     if c == config['keys']['update']:
         closeCurses()

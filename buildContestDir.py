@@ -22,12 +22,13 @@ def buildContestDir(CONTEST_NO, PROBLEM_ALPHA=None, chooseFileExtension = False)
     Example:
     Watermelon, problem 4A on codeforces, has the CONTEST_NO of 4 and the PROBLEM_ALPHA of A.
     """
-    try:
-        os.makedirs(CONTEST_NO)
-    except:
-        print('Folder for that contest already made. Will continue without doing anything...')
+    if str(os.getcwd()).split('/')[-1] != str(CONTEST_NO):
+        try:
+            os.makedirs(CONTEST_NO)
+        except:
+            print('Folder for that contest already made. Will continue without doing anything...')
+        os.chdir(CONTEST_NO)
 
-    os.chdir(CONTEST_NO)
     if PROBLEM_ALPHA == None:
         for i in range(65,70):
             subprocess.call(['touch',CONTEST_NO+chr(i)]) # creates a file with the function
