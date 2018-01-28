@@ -43,59 +43,54 @@ buildContestDir.buildContestDir(contestNo,problemAlpha)
 
 # get solutions and store in directory
 (inputs,outputs) = getInputOutput.getInputOutput(contestNo, problemAlpha)
-with open(contestNo+problemAlpha+'.in', 'w') as f:
-    for inpt in inputs:
+i = 0
+for inpt in inputs:
+    with open(contestNo+problemAlpha+'_'+str(i)+'.in', 'w') as f:
         f.write(inpt)
-with open(contestNo+problemAlpha+'.out', 'w') as f:
-    for output in outputs:
-        f.write(output)
-
-print(threading.current_thread())
+    with open(contestNo+problemAlpha+'_'+str(i)+'.out', 'w') as f:
+        f.write(outputs[i])
+    i += 1
 
 def writeFile():
-        subprocess.run([config['favEditor'],contestNo+problemAlpha+'.'+config['favExtension']])
+    subprocess.run([config['favEditor'],contestNo+problemAlpha+'.'+config['favExtension']])
 
-def suboptimalSol():
+def testFile():
     while True:
-        cmd = input('''\n
-                "diff" : see difference between output and your answer\n
-                "write" : write to your file using your preferred editor \n
-                "submit" : opens submission url for the specified problem\n
-                "verdict" : gets the verdict of the problem you submitted last\n
-                "exit" : exits program. alternatively, press "ctrl+c" to exit\n\n''')
-        if cmd == 'write':
-            subprocess.run([config['favEditor'],contestNo+problemAlpha+'.'+config['favExtension']])
-            subprocess.run(['g++', contestNo+problemAlpha+'.cpp', '-o', contestNo+problemAlpha])
-        if cmd == 'diff':
-            for inpt in inputs:
-                myOutput = subprocess.check_output(["./"+contestNo+problemAlpha, inpt]).decode('utf8')
-                with open(contestNo+problemAlpha+'.ans', 'w') as f:
-                    f.write(myOutput)
-                subprocess.run(['diff',contestNo+problemAlpha+'.ans', contestNo+problemAlpha+'.out'])
-        if cmd == 'exit':
-            sys.exit()
-        if cmd == 'submit':
-            openContestUrl.openContestUrl(contestNo,problemAlpha)
-            input("press enter once you've submitted...")
-            verdict = ''
-            while verdict != '':
-                verdict = getVerdict.getVerdict()
-                if verdict != '':
+        i = 0
+        correctOutputs = 0
+
+        # compile the program if necessary
+        subprocess.run(['g++', contestNo+problemAlpha+'.cpp', '-o', contestNo+problemAlpha])
+
+        for inpt in inputs:
+            testOutput = subprocess.check_output(['./'+contestNo+problemAlpha, '<', contestNo+problemAlpha+'_'+str(i)+'.in']).decode('utf8')
+            if testOutput == outputs[i]:
+                print(testOutput)
+                correctOutputs += 1
+            i += 1
+
+        if correctOutputs == len(inputs):
+            print('all cases passed!')
+            shouldSubmit = input('do you want to submit? type in "y" to submit\n')
+            if shouldSubmit == 'y':
+                openContestUrl.openContestUrl(contestNo, problemAlpha)
+                i = 0
+                while verdict != '':
+                    verdict = getVerdict.getVerdict()
                     print('The last result was: ',verdict)
-                else:
-                    print("The judge didn't finish evaluating...")
                     time.sleep(1)
-        if cmd == 'verdict':
-            print('The last result was: ',getVerdict.getVerdict())
+                    i += 1
+                    if i > config['maxCalls']:
+                        print('timeout; judge did not give a verdict within '+str(config['maxCalls'])+' seconds.')
+                        break;
+            return
 
-def myfunc0():
-    print('sleeping 5 sec from thread')
-    time.sleep(5)
-    print('done sleeping')
+        time.sleep(3)
 
-t0 = threading.Thread(target = myfunc0)
-t0.start()
 
 writeFileThread = threading.Thread(target = writeFile)
-t.start()
+writeFileThread.start()
+
+testFileThread = threading.Thread(target = testFile)
+testFileThread.start()
 
