@@ -1,5 +1,4 @@
 # byteGun 
-
 _Inspired by Terminal Leetcode._  
 A codeforces test suite. Still building, and as such a lot of design decisions are not made.
 ##todo
@@ -8,6 +7,7 @@ A codeforces test suite. Still building, and as such a lot of design decisions a
 - build a navigator for all problems
 - let the user sort the problems by difficulty
 - let the user sort the problems by tags
+- find a better solution for finding if the editor thread is closed
 
 ##what's done so far
 - have a solution for building a directory for contests specified

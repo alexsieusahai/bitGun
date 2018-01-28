@@ -4,5 +4,11 @@
 favEditor: 'vim'
 favExtension: 'cpp'
 favBrowser: 'firefox'
-handle: itspax
+handle: 'itspax'
 maxCalls: 10
+compiles:
+    cpp: True
+    python: False
+    java: True
+compileCmd:
+    cpp: "'g++', contestNo+problemAlpha+'.cpp', '-o', contestNo+problemAlpha"

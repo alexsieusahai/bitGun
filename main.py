@@ -60,10 +60,20 @@ def testFile():
         correctOutputs = 0
 
         # compile the program if necessary
-        subprocess.run(['g++', contestNo+problemAlpha+'.cpp', '-o', contestNo+problemAlpha])
+        if config['compiles']:
+            if config['favExtension'] == 'cpp':
+                subprocess.run(['g++', contestNo+problemAlpha+'.cpp', '-o', contestNo+problemAlpha])
+            else:
+                print('language compile syntax not supported; please log as an issue on the repo for byteGun')
 
         for inpt in inputs:
-            testOutput = subprocess.check_output(['./'+contestNo+problemAlpha, '<', contestNo+problemAlpha+'_'+str(i)+'.in']).decode('utf8')
+            if config['favExtension'] == 'cpp':
+                testOutput = subprocess.check_output(['./'+contestNo+problemAlpha, '<', contestNo+problemAlpha+'_'+str(i)+'.in']).decode('utf8')
+            else if config['favExtension'] == 'py':
+                testOutput = subprocess.check_output(['python3', contestNo+problemAlpha+'.py', '<', contestNo+problemAlpha+'_'+str(i)+'.in']).decode('utf8')
+            else:
+                print('language currently not supported. either fork and add it yourself then make a pull request, or log as an issue on the repo for byteGun.')
+
             if testOutput == outputs[i]:
                 print(testOutput)
                 correctOutputs += 1
@@ -71,10 +81,18 @@ def testFile():
 
         if correctOutputs == len(inputs):
             print('all cases passed!')
-            shouldSubmit = input('do you want to submit? type in "y" to submit\n')
+            print('close your editor to begin submission process if you want')
+            # lets make the assumption that only 3 threads will be open (main, editor, this one). then, only continue if threading.active_count() == 2
+            while threading.active_count() != 2:
+                i = 0
+                time.sleep(1) # be nice
+                # do nothing; busy loop
+            shouldSubmit = input('press "y" and enter to submit\n').strip()
+            # this solution works for vim
             if shouldSubmit == 'y':
                 openContestUrl.openContestUrl(contestNo, problemAlpha)
                 i = 0
+                verdict = ''
                 while verdict != '':
                     verdict = getVerdict.getVerdict()
                     print('The last result was: ',verdict)
@@ -84,7 +102,6 @@ def testFile():
                         print('timeout; judge did not give a verdict within '+str(config['maxCalls'])+' seconds.')
                         break;
             return
-
         time.sleep(3)
 
 
