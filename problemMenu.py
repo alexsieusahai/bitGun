@@ -1,11 +1,13 @@
 import urllib.request
 import json
 import curses
+import sys
 
-import components/solveProblem
-import components/showProblemDesc
-import components/scrapeProblemData
-import components/getSavedProblemData
+import solveProblem
+import showProblemDesc
+import scrapeProblemData
+import getSavedProblemData
+from config import config
 
 stdscr = curses.initscr()
 # curses stuff
@@ -22,28 +24,17 @@ def closeCurses():
     curses.endwin()
 
 beginCurses()
+[maxX, maxY] = stdscr.getmaxyx()
+maxX -= 5
 problemList = []
-
-# getting problem data
-#problems = urllib.request.urlopen('http://codeforces.com/api/problemset.problems')
-#response = ""
-#while True:
-#    data = problems.read().decode()
-#    if not data:
-#        break
-#    response += data
-#problems = json.loads(response)['result']['problems']
-
 problems = getSavedProblemData.getSavedProblemData()
 
-#with open('problemData.txt', 'w') as outfile:
-#    json.dump(problems, outfile)
 
 i = 0
 for problem in problems:
     try:
-        if i < 20:
-            stdscr.addstr(problem['name']+'\n')
+        if i < maxX:
+            stdscr.addstr(str(i)+'\t'+problem['name']+'\n')
             stdscr.refresh()
         problemList.append((problem['name'],str(problem['contestId']),problem['index']))
     except:
@@ -58,15 +49,15 @@ while True:
     c = stdscr.getkey()
     # clean row
     stdscr.clrtoeol()
-    if c == 'j':
+    if c == config['keys']['down']:
         y += 1
-        if y > 20:
+        if y > maxX:
             y = 0
-        stdscr.addstr(problemList[problemNo][0]) # get rid of reverse
+        stdscr.addstr(str(problemNo)+'\t'+problemList[problemNo][0]) # get rid of reverse
         problemNo += 1
         stdscr.move(y,0)
-    if c == 'k':
-        stdscr.addstr(problemList[problemNo][0]) # get rid of reverse
+    if c == config['keys']['up']:
+        stdscr.addstr(str(problemNo)+'\t'+problemList[problemNo][0]) # get rid of reverse
         y -= 1
         problemNo -= 1
         if y < 0:
@@ -74,27 +65,56 @@ while True:
         if problemNo < 0:
             problemNo = 0
         stdscr.move(y,0)
-    if c == 'i':
+    if c == config['keys']['attempt']:
         closeCurses()
         if showProblemDesc.showProblemDesc(problemList[y][1], problemList[y][2]):
             #solveProblem.solveProblem(problemList[y][1],problemList[y][2])
             solveProblem.solveProblem('4','A')
         beginCurses()
-    if c == 'h':
+    if c == config['keys']['update']:
         closeCurses()
-        print('''
-        k : move up
-        j : move down
-        i : attempt that problem
-        h : help
-        ''')
-        beginCurses()
-    if c == 'u':
         shouldUpdate = input('are you sure you want to update the current codeforces directory? this might take a while, so be patient if you do. (y/n)').strip()
         if shouldUpdate == 'y':
-            print('hi')
+            scrapeProblemData.scrapeProblemData() # refreshes the problem data
+        beginCurses()
+    if c == config['keys']['close']:
+        closeCurses()
+        sys.exit()
+
+    if c == config['keys']['searchIdInd']:
+        closeCurses()
+        print("if you don't want to specify anything for that input, just put '*'")
+        contestNo = input('enter contest number\n')
+        ind = input('enter index of the problem\n').upper()
+        for problem in problems:
+            if str(problem['contestId']) == contestNo and problem['index'] == ind.upper():
+                if showProblemDesc.showProblemDesc(str(problem['contestId']), problem['index']):
+                    solveProblem.solveProblem(str(problem['contestId']), problem['index'])
+                break
+            elif str(problem['contestId']) == contestNo and ind == '*':
+                if showProblemDesc.showProblemDesc(str(problem['contestId']), problem['index']):
+                    solveProblem.solveProblem(str(problem['contestId']), problem['index'])
+                break
+            elif contestNo == '*' and problem['index'] == ind:
+                if showProblemDesc.showProblemDesc(str(problem['contestId']), problem['index']):
+                    solveProblem.solveProblem(str(problem['contestId']), problem['index'])
+                break
+        beginCurses()
+
+
+    if c == config['keys']['searchName']:
+        closeCurses()
+        searchName = input('please enter the name of the problem you want to find.\n').strip().lower()
+        for problem in problems:
+            if problem['name'].lower() == searchName:
+                if showProblemDesc.showProblemDesc(str(problem['contestId']), problem['index']):
+                    solveProblem.solveProblem(str(problem['contestId']), problem['index'])
+                break
+        beginCurses()
+
+
 
     stdscr.clrtoeol()
-    stdscr.addstr(problemList[problemNo][0],curses.A_REVERSE)
+    stdscr.addstr(str(problemNo)+'\t'+problemList[problemNo][0],curses.A_REVERSE)
     stdscr.move(y,0)
     stdscr.refresh()

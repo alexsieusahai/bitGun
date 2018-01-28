@@ -10,5 +10,12 @@ compiles:
     cpp: True
     python: False
     java: True
-compileCmd:
-    cpp: "'g++', contestNo+problemAlpha+'.cpp', '-o', contestNo+problemAlpha"
+keys:
+    up: 'k'
+    down: 'j'
+    attempt: 'i'
+    update: 'u'
+    close: 'c'
+    searchName: 'n'
+    searchIdInd: 's'
+

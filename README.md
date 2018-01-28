@@ -1,14 +1,13 @@
 # byteGun 
-_Inspired by Terminal Leetcode._  
 A codeforces test suite. 
 ##todo
 - build an editor for _config.yml_
 - find a solution for compiling and running for an arbitrary specified language that's better than the garbage one I have now
-- let the user search for a problem based on name _(try obvious O(n) solution)_
 - let the user sort the problems by difficulty
 - let the user sort the problems by tags
 - find a better solution for finding if the editor thread is closed
 - **important;** figure out a way to submit without having the user go to codeforces and login manually if possible
+- implement a fuzzy search for name comparison
 
 ##what's done so far
 - have a solution for building a directory for contests specified
@@ -22,3 +21,6 @@ A codeforces test suite.
     - then checks the verdict by requesting the data from the _Codeforces_ api
 - using _curses_ and _codeforces api_, a way to view and scroll through all the problems was implemented
 - the problem description is now scraped from the website and the user is prompted with a confirmation that this is the problem that they want to work on
+- stored the json data and i'm loading that stored data instead of scraping it everytime
+- search by name implemented
+- search by contest id and index implemented
