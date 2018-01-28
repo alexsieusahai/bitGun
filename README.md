@@ -1,4 +1,4 @@
-# bitGun
+# byteGun 
 
 A codeforces test suite. Still building, and as such a lot of design decisions are not made.
 ##todo
