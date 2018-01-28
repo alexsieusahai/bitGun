@@ -2,6 +2,8 @@
 A codeforces test suite. 
 ##todo
 - build an editor for _config.yml_
+- implement jump to a certain number
+    - use this to jump to contest areas instead of just bringing the user to the file
 - incorporate tutorials for problems and some interface for the user to access it (maybe a keyword?)
 - find a solution for compiling and running for an arbitrary specified language that's better than what I have now
 - let the user sort the problems by tags
@@ -25,3 +27,4 @@ A codeforces test suite.
 - search by name implemented
 - search by contest id and index implemented
 - using _codeforces api_ to find the problems the user with the specified handle in _config.yml_ has solved, then displaying that with the terminal scrolling
+- implemented page switching for faster access

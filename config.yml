@@ -20,4 +20,5 @@ keys:
     close: 'c'
     searchName: 'n'
     searchIdInd: 's'
+    jump: 'w'
 

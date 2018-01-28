@@ -9,7 +9,6 @@ def getInputOutput(CONTEST_NO, PROBLEM_ALPHA):
 
     Returns a tuple of lists, where tuple[0] is a list of inputs, and tuple[1] is a list of outputs. It is guaranteed that if the data scraping works fine that len(tuple[0]) == len(tuple[1])
     """
-    print('getting inputs and outputs for the problem '+CONTEST_NO+PROBLEM_ALPHA)
     PROBLEM_ALPHA = PROBLEM_ALPHA.upper()
     urlString = 'http://codeforces.com/problemset/problem/'+CONTEST_NO+'/'+PROBLEM_ALPHA
     fp = urllib.request.urlopen(urlString)

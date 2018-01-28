@@ -131,19 +131,36 @@ while True:
             problemNo-= 1
         stdscr.move(y,0)
 
+    if c == config['keys']['jump']:
+        y = 0
+        closeCurses()
+        toJump = int(input("Please input just the number that you want to jump to.\n"))
+        beginCurses()
+        stdscr.move(0,0)
+        problemNo = toJump
+        for i in range(maxX):
+            stdscr.clrtoeol()
+            stdscr.addstr(fancyString(problemNo, problemList))
+            stdscr.move(y,0)
+            y += 1
+            problemNo += 1
+        stdscr.move(0,0)
+        problemNo = toJump-1
+
     if c == config['keys']['attempt']:
         closeCurses()
         if showProblemDesc.showProblemDesc(problemList[y][1], problemList[y][2]):
-            #solveProblem.solveProblem(problemList[y][1],problemList[y][2])
-            solveProblem.solveProblem('4','A')
+            solveProblem.solveProblem(problemList[y][1],problemList[y][2])
             getSolvedProblems.getSolvedProblems() # refresh the correct dict
         beginCurses()
+
     if c == config['keys']['update']:
         closeCurses()
         shouldUpdate = input('are you sure you want to update the current codeforces directory? this might take a while, so be patient if you do. (y/n)').strip()
         if shouldUpdate == 'y':
             scrapeProblemData.scrapeProblemData() # refreshes the problem data
         beginCurses()
+
     if c == config['keys']['close']:
         closeCurses()
         sys.exit()
