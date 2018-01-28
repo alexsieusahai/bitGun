@@ -12,7 +12,9 @@ def showProblemDesc(contestNo, problemAlpha):
     print('PROBLEM DESC:')
     for i in soupInputs:
         try:
-            print(i.text)
+            toPrint = i.text
+            if len(toPrint) > 20 and toPrint[-1] != ':':
+                print(i.text)
         except:
             continue
     toReturn = input('\nDo you want to attempt to solve this problem? (y/n)\n')

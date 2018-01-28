@@ -1,9 +1,9 @@
 # byteGun 
 A codeforces test suite. 
 ##todo
+- implement a function to refresh solved problems, then run it every single time you finish "solving" a problem
 - build an editor for _config.yml_
 - find a solution for compiling and running for an arbitrary specified language that's better than the garbage one I have now
-- let the user sort the problems by difficulty
 - let the user sort the problems by tags
 - find a better solution for finding if the editor thread is closed
 - **important;** figure out a way to submit without having the user go to codeforces and login manually if possible

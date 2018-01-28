@@ -7,10 +7,21 @@ import solveProblem
 import showProblemDesc
 import scrapeProblemData
 import getSavedProblemData
+import getSolvedProblems
 from config import config
 
-stdscr = curses.initscr()
+correctDict = getSolvedProblems.getSolvedProblems()
+
+# string formatting for printing
+def fancyString(problemNum,problemList):
+    solved = False
+    if str(problemList[problemNum][1])+problemList[problemNum][2] in correctDict:
+        solved = True
+    nicestr=str(problemNum)+'\t'+str(solved)+'\t'+problemList[problemNum][2]+'\t'+problemList[problemNum][0]
+    return nicestr
+
 # curses stuff
+stdscr = curses.initscr()
 def beginCurses():
     stdscr = curses.initscr()
     stdscr.keypad(1)
@@ -28,13 +39,20 @@ beginCurses()
 maxX -= 5
 problemList = []
 problems = getSavedProblemData.getSavedProblemData()
-
+correctDict = getSolvedProblems.getSolvedProblems()
 
 i = 0
+# tells the user what everything is
+stdscr.move(maxX+2,0)
+stdscr.addstr('Problem\tSolved\tIndex\tName')
+stdscr.move(0,0)
 for problem in problems:
+    solved = False
+    if str(problem['contestId'])+problem['index'] in correctDict:
+        solved = True
     try:
-        if i < maxX:
-            stdscr.addstr(str(i)+'\t'+problem['name']+'\n')
+        if i < maxX+1:
+            stdscr.addstr(str(i)+'\t'+str(solved)+'\t'+problem['index']+'\t'+problem['name']+'\n')
             stdscr.refresh()
         problemList.append((problem['name'],str(problem['contestId']),problem['index']))
     except:
@@ -47,21 +65,46 @@ problemNo = 0
 stdscr.move(0,0)
 while True:
     c = stdscr.getkey()
-    # clean row
     stdscr.clrtoeol()
     if c == config['keys']['down']:
         y += 1
         if y > maxX:
             y = 0
-        stdscr.addstr(str(problemNo)+'\t'+problemList[problemNo][0]) # get rid of reverse
+            # render all the next ones
+            problemNoRender = problemNo
+            yRender = y
+            for i in range(maxX+2):
+                stdscr.clrtoeol()
+                stdscr.addstr(fancyString(problemNoRender, problemList))
+                stdscr.move(yRender,0)
+                yRender += 1
+                problemNoRender += 1
+            stdscr.move(y,0)
+
+        stdscr.addstr(fancyString(problemNo, problemList))
         problemNo += 1
         stdscr.move(y,0)
+
     if c == config['keys']['up']:
-        stdscr.addstr(str(problemNo)+'\t'+problemList[problemNo][0]) # get rid of reverse
+        stdscr.addstr(fancyString(problemNo, problemList))
         y -= 1
         problemNo -= 1
         if y < 0:
             y = 0
+            problemNo += 1
+            if problemNo == 0:
+                # not a perfect solution, just test it to see what I mean
+                continue
+            #render the ones from before
+            yRender = maxX
+            for i in range(maxX+1,0,-1):
+                stdscr.clrtoeol()
+                stdscr.addstr(problemNo, problemList)
+                stdscr.move(yRender,0)
+                yRender -= 1
+                problemNo-= 1
+            stdscr.move(maxX,0)
+
         if problemNo < 0:
             problemNo = 0
         stdscr.move(y,0)
@@ -113,8 +156,10 @@ while True:
         beginCurses()
 
 
-
+    solved = False
+    if str(problemList[problemNo][1])+problemList[problemNo][2] in correctDict:
+        solved = True
     stdscr.clrtoeol()
-    stdscr.addstr(str(problemNo)+'\t'+problemList[problemNo][0],curses.A_REVERSE)
+    stdscr.addstr(str(problemNo)+'\t'+str(solved)+'\t'+problemList[problemNo][2]+'\t'+problemList[problemNo][0],curses.A_REVERSE)
     stdscr.move(y,0)
     stdscr.refresh()
