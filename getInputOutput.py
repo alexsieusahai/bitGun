@@ -10,31 +10,30 @@ def getInputOutput(CONTEST_NO, PROBLEM_ALPHA):
 
     Returns a tuple of lists, where tuple[0] is a list of inputs, and tuple[1] is a list of outputs. It is guaranteed that if the data scraping works fine that len(tuple[0]) == len(tuple[1])
     """
-
+    print('getting inputs and outputs for the problem '+CONTEST_NO+PROBLEM_ALPHA)
     PROBLEM_ALPHA = PROBLEM_ALPHA.upper()
-    fp = urllib.request.urlopen('http://codeforces.com/problemset/problem/'+CONTEST_NO+'/'+PROBLEM_ALPHA)
+    urlString = 'http://codeforces.com/problemset/problem/'+CONTEST_NO+'/'+PROBLEM_ALPHA
     fp = urllib.request.urlopen(urlString)
     mybytes = fp.read() # read in bytecode
     rawHtml = mybytes.decode("utf8") # decode mybytes using decode method and pass utf8
     # rawHtml is now the html
     fp.close() # close it since we aren't using it anymore
 
-    # credits to
-    # https://www.crummy.com/software/BeautifulSoup/bs4/doc/
     soup = BeautifulSoup(rawHtml, 'html.parser')
     soupInputs = soup.find_all(attrs={'input'})
     soupOutputs = soup.find_all(attrs={'output'})
     testCaseNo = 0 # keep track of which test case it is
     for i in range(len(soupInputs)):
         inputs = str(soupInputs[i].pre).split('<br/>')
-        inputs = inputs[1:len(inputs)-1] # remove the garbage tags from the front and the back
-        print(inputs)
+        if ('<pre>' in inputs[0]):
+            inputs[0] = inputs[0].split('<pre>')[1];
+        inputs = inputs[:-1]
+        print('inputs: ',inputs)
 
         outputs = str(soupOutputs[i].pre).split('<br/>') # splitting by the only tag that seperates the outputs
-        outputs = outputs[:len(outputs)-1] # remove the garbage tags from the front and the backS
+        outputs = outputs[:len(outputs)-1] # remove the garbage tags from the front and the back
         outputs[0] = ''.join(list(outputs[0])[5:]) # getting rid of a <pre> tag in front of some of the output
-        print(outputs)
+        print('outputs: ',outputs)
         testCaseNo += 1
     return (inputs,outputs)
-
 
