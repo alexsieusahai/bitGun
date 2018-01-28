@@ -66,9 +66,18 @@ while True:
         stdscr.move(y,0)
     if c == 'i':
         closeCurses()
-        if showProblemDesc(problemList[y][1], problemList[y][2]):
+        if showProblemDesc.showProblemDesc(problemList[y][1], problemList[y][2]):
             #solveProblem.solveProblem(problemList[y][1],problemList[y][2])
             solveProblem.solveProblem('4','A')
+        beginCurses()
+    if c == 'h':
+        closeCurses()
+        print('''
+        k : move up
+        j : move down
+        i : attempt that problem
+        h : help
+        ''')
         beginCurses()
 
     stdscr.clrtoeol()

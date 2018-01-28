@@ -1,6 +1,6 @@
 # byteGun 
 _Inspired by Terminal Leetcode._  
-A codeforces test suite. Still building, and as such a lot of design decisions are not made.
+A codeforces test suite. 
 ##todo
 - build an editor for _config.yml_
 - find a solution for compiling and running for an arbitrary specified language that's better than the garbage one I have now
@@ -21,3 +21,4 @@ A codeforces test suite. Still building, and as such a lot of design decisions a
     - if it agrees with the test cases, it prompts the user to submit the solution online
     - then checks the verdict by requesting the data from the _Codeforces_ api
 - using _curses_ and _codeforces api_, a way to view and scroll through all the problems was implemented
+- the problem description is now scraped from the website and the user is prompted with a confirmation that this is the problem that they want to work on

@@ -1,6 +1,5 @@
-import urllib
+import urllib.request
 from bs4 import BeautifulSoup
-
 
 def getInputOutput(CONTEST_NO, PROBLEM_ALPHA):
     """
