@@ -1,0 +1,5 @@
+# all the configurations for the projec
+# want to store favorite editor, language extensions, favorite language
+
+favEditor: 'vim'
+favExtension: 'cpp'
