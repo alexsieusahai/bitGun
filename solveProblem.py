@@ -15,6 +15,8 @@ import openContestUrl
 import getVerdict
 from config import config
 
+FNULL = open(os.devnull, 'w')
+
 # deprecated
 ## handle parsing of the contest
 #parser = argparse.ArgumentParser()
@@ -53,22 +55,30 @@ def solveProblem(contestNo, problemAlpha):
             correctOutputs = 0
 
             # compile the program if necessary
-            if config['compiles']:
+            if config['compiles'][config['favExtension']]:
                 if config['favExtension'] == 'cpp':
-                    subprocess.run(['g++', contestNo+problemAlpha+'.cpp', '-o', contestNo+problemAlpha])
+                    try:
+                        subprocess.run(['g++', contestNo+problemAlpha+'.cpp', '-o', contestNo+problemAlpha],stdout=FNULL,stderr=subprocess.STDOUT)
+                    except:
+                        continue # ignore and try again
                 else:
                     print('language compile syntax not supported; please log as an issue on the repo for byteGun')
 
             for inpt in inputs:
                 if config['favExtension'] == 'cpp':
-                    testOutput = subprocess.check_output(['./'+contestNo+problemAlpha, '<', contestNo+problemAlpha+'_'+str(i)+'.in']).decode('utf8')
+                    try:
+                        testOutput = subprocess.check_output(['./'+contestNo+problemAlpha, '<', contestNo+problemAlpha+'_'+str(i)+'.in'], stderr=subprocess.STDOUT).decode('utf8')
+                    except:
+                        continue
                 elif config['favExtension'] == 'py':
-                    testOutput = subprocess.check_output(['python3', contestNo+problemAlpha+'.py', '<', contestNo+problemAlpha+'_'+str(i)+'.in']).decode('utf8')
+                    try:
+                        testOutput = subprocess.check_output(['python3', contestNo+problemAlpha+'.py', '<', contestNo+problemAlpha+'_'+str(i)+'.in']).decode('utf8')
+                    except:
+                        continue
                 else:
                     print('language currently not supported. either fork and add it yourself then make a pull request, or log as an issue on the repo for byteGun.')
 
                 if testOutput == outputs[i]:
-                    print(testOutput)
                     correctOutputs += 1
                 i += 1
 
