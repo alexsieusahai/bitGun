@@ -1,6 +1,6 @@
-# byteGun 
-A codeforces test suite. 
-##todo
+#  bitGun
+A codeforces test suite.   
+## todo
 - build an editor for _config.yml_
 - incorporate tutorials for problems and some interface for the user to access it (maybe a keyword?)
 - find a solution for compiling and running for an arbitrary specified language that's better than what I have now
@@ -9,7 +9,7 @@ A codeforces test suite.
 - **important;** figure out a way to submit without having the user go to codeforces and login manually if possible
 - implement a fuzzy search for name comparison
 
-##what's done so far
+## what's done so far
 - have a solution for building a directory for contests specified
 - touches and creates the file with the specified extension
 - grabbed the input and output data using beautifulsoup from codeforces
@@ -26,3 +26,8 @@ A codeforces test suite.
 - search by contest id and index implemented
 - using _codeforces api_ to find the problems the user with the specified handle in _config.yml_ has solved, then displaying that with the terminal scrolling
 - implemented page switching for faster access
+
+## to eventually do
+- instead of grabbing just problem, grab problem and statistics so you could search for instance, B difficulty problems sorted in descending order
+### bugs
+- okay, so problem 913A doesn't get its html scraped right for the inputs and outputs. It only grabs the last inputs and outputs

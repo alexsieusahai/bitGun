@@ -20,8 +20,12 @@ def showProblemDesc(contestNo, problemAlpha):
         except:
             continue
     [inputs,outputs] = getInputOutput.getInputOutput(contestNo,problemAlpha)
+    print('INPUT: ')
     for i in range(len(inputs)):
-        print('INPUT: ',inputs[i])
-        print('OUTPUT: ',outputs[i])
+        print(inputs[i])
+    print('OUTPUT: ')
+    for i in outputs:
+        print(i)
     toReturn = input('\nDo you want to attempt to solve this problem? (y/n)\n')
     return toReturn == 'y'
+

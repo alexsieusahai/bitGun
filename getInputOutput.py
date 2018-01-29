@@ -21,15 +21,18 @@ def getInputOutput(CONTEST_NO, PROBLEM_ALPHA):
     soupInputs = soup.find_all(attrs={'input'})
     soupOutputs = soup.find_all(attrs={'output'})
     testCaseNo = 0 # keep track of which test case it is
+    totInputs = []
+    totOutputs = []
     for i in range(len(soupInputs)):
         inputs = str(soupInputs[i].pre).split('<br/>')
         if ('<pre>' in inputs[0]):
             inputs[0] = inputs[0].split('<pre>')[1];
-        inputs = inputs[:-1]
+        totInputs.append(inputs[:-1])
 
         outputs = str(soupOutputs[i].pre).split('<br/>') # splitting by the only tag that seperates the outputs
         outputs = outputs[:len(outputs)-1] # remove the garbage tags from the front and the back
         outputs[0] = ''.join(list(outputs[0])[5:]) # getting rid of a <pre> tag in front of some of the output
+        totOutputs.append(outputs)
         testCaseNo += 1
-    return (inputs,outputs)
+    return (totInputs,totOutputs)
 

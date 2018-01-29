@@ -41,10 +41,20 @@ def solveProblem(contestNo, problemAlpha):
     i = 0
     for inpt in inputs:
         with open(contestNo+problemAlpha+'_'+str(i)+'.in', 'w') as f:
-            f.write(inpt)
+            lines = ""
+            for line in inpt:
+                lines += line+'\n'
+            i += 1
+            f.write(lines)
+
+    i = 0
+    for output in outputs:
         with open(contestNo+problemAlpha+'_'+str(i)+'.out', 'w') as f:
-            f.write(outputs[i])
-        i += 1
+            lines = ""
+            for line in output:
+                lines += line+'\n'
+            i += 1
+            f.write(lines)
 
     def writeFile():
         subprocess.run([config['favEditor'],contestNo+problemAlpha+'.'+config['favExtension']])
@@ -65,23 +75,22 @@ def solveProblem(contestNo, problemAlpha):
                     print('language compile syntax not supported; please log as an issue on the repo for byteGun')
 
             for inpt in inputs:
-                if config['favExtension'] == 'cpp':
-                    try:
-                        testOutput = subprocess.check_output(['./'+contestNo+problemAlpha, '<', contestNo+problemAlpha+'_'+str(i)+'.in'], stderr=subprocess.STDOUT).decode('utf8')
-                    except:
-                        continue
-                elif config['favExtension'] == 'py':
-                    try:
-                        testOutput = subprocess.check_output(['python3', contestNo+problemAlpha+'.py', '<', contestNo+problemAlpha+'_'+str(i)+'.in']).decode('utf8')
-                    except:
-                        continue
-                else:
-                    print('language currently not supported. either fork and add it yourself then make a pull request, or log as an issue on the repo for byteGun.')
-
-                if testOutput == outputs[i]:
-                    correctOutputs += 1
-                i += 1
-
+                with open(contestNo+problemAlpha+'_'+str(i)+'.in') as inStream:
+                    if config['favExtension'] == 'cpp':
+                        try:
+                            testOutput = subprocess.check_output(['./'+contestNo+problemAlpha], stdin=inStream,stderr=subprocess.STDOUT).decode('utf8')
+                        except:
+                            continue
+                    elif config['favExtension'] == 'py':
+                        try:
+                            testOutput = subprocess.check_output(['python3', contestNo+problemAlpha+'.py'], stdin=inStream,stderr=subprocess.STDOUT).decode('utf8')
+                        except:
+                            continue
+                    else:
+                        print('language currently not supported. either fork and add it yourself then make a pull request, or log as an issue on the repo for byteGun.')
+                    if testOutput == ''.join(outputs[i]):
+                        correctOutputs += 1
+                    i += 1
             if correctOutputs == len(inputs):
                 print('all cases passed!')
                 print('close your editor to begin submission process if you want')
@@ -116,3 +125,4 @@ def solveProblem(contestNo, problemAlpha):
 
     while writeFileThread.is_alive() or testFileThread.is_alive():
         time.sleep(1)
+
