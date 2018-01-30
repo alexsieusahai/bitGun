@@ -29,5 +29,3 @@ A codeforces test suite.
 
 ## to eventually do
 - instead of grabbing just problem, grab problem and statistics so you could search for instance, B difficulty problems sorted in descending order
-### bugs
-- okay, so problem 913A doesn't get its html scraped right for the inputs and outputs. It only grabs the last inputs and outputs
