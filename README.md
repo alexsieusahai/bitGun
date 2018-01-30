@@ -30,3 +30,4 @@ A codeforces test suite.
 ## to eventually do
 - instead of grabbing just problem, grab problem and statistics so you could search for instance, B difficulty problems sorted in descending order
 - build something to move solutions of a list of files with some naming scheme (like `913a.cpp` or `modularExponentiation.cpp`, for instance) to the bitGun directory
+- scrape the user's github and get their preferred language by looking at what language they use the most (i think github api makes this easy)
