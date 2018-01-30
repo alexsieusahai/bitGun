@@ -32,3 +32,4 @@ A codeforces test suite.
 - build something to move solutions of a list of files with some naming scheme (like `913a.cpp` or `modularExponentiation.cpp`, for instance) to the bitGun directory
 - scrape the user's github and get their preferred language by looking at what language they use the most (i think github api makes this easy)
 - automatically update every so often (ask the user before actually updating)
+- fuzzy search for the name 
