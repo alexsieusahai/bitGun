@@ -1,6 +1,7 @@
 #  bitGun
 A codeforces test suite.   
 ## todo
+- **URGENT** checking the inputs every second using vim is really annoying; first check to see if the user has editted the file (last modified, bytesize (not as good)?) then if it differs recompile and check
 - build an editor for _config.yml_
 - incorporate tutorials for problems and some interface for the user to access it (maybe a keyword?)
 - find a solution for compiling and running for an arbitrary specified language that's better than what I have now
